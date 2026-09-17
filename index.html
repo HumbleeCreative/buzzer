@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Buzzer</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="sound-toggle" aria-label="Sound mode">
+      <span class="sound-toggle__label">Synth</span>
+
+      <button
+        class="toggle-switch is-active"
+        id="soundToggle"
+        type="button"
+        role="switch"
+        aria-checked="true"
+        aria-label="Toggle buzzer sound source"
+      >
+        <span class="toggle-switch__thumb"></span>
+      </button>
+
+      <span class="sound-toggle__label">Buzzer</span>
+    </div>
+
+    <main class="buzzer-page">
+      <button
+        class="buzzer"
+        id="buzzer"
+        type="button"
+        aria-label="Press buzzer"
+      >
+        <span class="buzzer-face"></span>
+      </button>
+    </main>
+
+    <audio id="buzzerClip" src="buzzer.mp3" preload="auto"></audio>
+
+    <script src="script.js"></script>
+  </body>
+</html>

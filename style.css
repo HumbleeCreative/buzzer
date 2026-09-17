@@ -1,0 +1,317 @@
+:root {
+  --background: #090b0e;
+
+  --red-light: #ff4349;
+  --red: #eb151d;
+  --red-dark: #9e080e;
+
+  --ring-light: #30343a;
+  --ring-dark: #15171b;
+
+  --text: #f4f4f5;
+  --text-muted: #8f949d;
+
+  --surface: rgba(22, 25, 31, 0.85);
+  --surface-border: rgba(255, 255, 255, 0.08);
+
+  --page-padding: clamp(1rem, 3vw, 2rem);
+
+  --buzzer-size: min(28rem, 68vw, 68vh);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  min-height: 100dvh;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: radial-gradient(
+    circle at center,
+    #15191f 0%,
+    #0c0f13 45%,
+    var(--background) 100%
+  );
+
+  color: var(--text);
+
+  overflow: hidden;
+}
+
+/* -----------------------------------
+   Sound toggle
+----------------------------------- */
+
+.sound-toggle {
+  position: fixed;
+
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  gap: clamp(0.45rem, 1vw, 0.65rem);
+
+  padding: clamp(0.55rem, 1.5vw, 0.7rem) clamp(0.7rem, 2vw, 0.9rem);
+
+  background: var(--surface);
+
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+
+  box-shadow:
+    0 0.8rem 2rem rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  backdrop-filter: blur(0.8rem);
+  -webkit-backdrop-filter: blur(0.8rem);
+}
+
+.sound-toggle__label {
+  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+
+  color: var(--text-muted);
+
+  user-select: none;
+}
+
+.toggle-switch {
+  position: relative;
+
+  width: clamp(2.5rem, 5vw, 2.8rem);
+  height: clamp(1.35rem, 3vw, 1.5rem);
+
+  flex: 0 0 auto;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 999px;
+
+  background: #2a2e35;
+
+  cursor: pointer;
+
+  transition: background 150ms ease;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toggle-switch__thumb {
+  position: absolute;
+
+  top: 50%;
+  left: 0.18rem;
+
+  width: calc(clamp(1rem, 2.4vw, 1.1rem));
+  height: calc(clamp(1rem, 2.4vw, 1.1rem));
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  box-shadow: 0 0.15rem 0.35rem rgba(0, 0, 0, 0.4);
+
+  transform: translateY(-50%) translateX(0);
+
+  transition: transform 150ms ease;
+}
+
+.toggle-switch.is-active {
+  background: var(--red);
+}
+
+.toggle-switch.is-active .toggle-switch__thumb {
+  transform: translateY(-50%) translateX(1.25rem);
+}
+
+.toggle-switch:focus-visible {
+  outline: 0.2rem solid rgba(255, 67, 73, 0.35);
+  outline-offset: 0.25rem;
+}
+
+/* -----------------------------------
+   Main layout
+----------------------------------- */
+
+.buzzer-page {
+  min-height: 100dvh;
+
+  display: grid;
+  place-items: center;
+
+  padding: calc(var(--page-padding) + env(safe-area-inset-top))
+    calc(var(--page-padding) + env(safe-area-inset-right))
+    calc(var(--page-padding) + env(safe-area-inset-bottom))
+    calc(var(--page-padding) + env(safe-area-inset-left));
+}
+
+/* -----------------------------------
+   Buzzer
+----------------------------------- */
+
+.buzzer {
+  position: relative;
+
+  width: var(--buzzer-size);
+  height: var(--buzzer-size);
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: linear-gradient(145deg, var(--ring-light), var(--ring-dark));
+
+  box-shadow:
+    0 2rem 4rem rgba(0, 0, 0, 0.55),
+    inset 0 0.15rem 0.2rem rgba(255, 255, 255, 0.1);
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.buzzer-face {
+  position: relative;
+
+  width: 87%;
+  height: 87%;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle at 40% 30%,
+    var(--red-light) 0%,
+    var(--red) 42%,
+    var(--red-dark) 100%
+  );
+
+  box-shadow:
+    0 0.8rem 0 #82070c,
+    0 1.25rem 1.8rem rgba(0, 0, 0, 0.45),
+    inset 0 0.25rem 0.35rem rgba(255, 255, 255, 0.18),
+    inset 0 -0.8rem 1.2rem rgba(80, 0, 0, 0.3);
+
+  transform: translateY(-0.35rem);
+
+  transition:
+    transform 90ms ease,
+    box-shadow 90ms ease,
+    filter 90ms ease;
+}
+
+.buzzer-face::before {
+  content: "";
+
+  position: absolute;
+
+  top: 9%;
+  left: 15%;
+
+  width: 70%;
+  height: 35%;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.13),
+    rgba(255, 255, 255, 0)
+  );
+
+  filter: blur(0.15rem);
+
+  pointer-events: none;
+}
+
+.buzzer:hover .buzzer-face {
+  filter: brightness(1.05);
+}
+
+.buzzer:active .buzzer-face,
+.buzzer.is-pressed .buzzer-face {
+  transform: translateY(0.15rem);
+
+  box-shadow:
+    0 0.3rem 0 #82070c,
+    0 0.7rem 1.2rem rgba(0, 0, 0, 0.4),
+    inset 0 0.2rem 0.3rem rgba(255, 255, 255, 0.12),
+    inset 0 -0.6rem 1rem rgba(80, 0, 0, 0.35);
+}
+
+.buzzer:focus-visible {
+  outline: 0.25rem solid rgba(255, 60, 70, 0.25);
+  outline-offset: 0.8rem;
+}
+
+/* -----------------------------------
+   Small phones
+----------------------------------- */
+
+@media (max-width: 30rem) {
+  :root {
+    --buzzer-size: min(20rem, 78vw, 58vh);
+  }
+
+  .sound-toggle {
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: max(0.75rem, env(safe-area-inset-right));
+  }
+}
+
+/* -----------------------------------
+   Short screens / landscape phones
+----------------------------------- */
+
+@media (max-height: 32rem) {
+  :root {
+    --buzzer-size: min(19rem, 44vw, 66vh);
+  }
+
+  .sound-toggle {
+    top: max(0.65rem, env(safe-area-inset-top));
+    right: max(0.65rem, env(safe-area-inset-right));
+
+    padding: 0.45rem 0.7rem;
+  }
+}
+
+/* -----------------------------------
+   Large screens
+----------------------------------- */
+
+@media (min-width: 90rem) and (min-height: 50rem) {
+  :root {
+    --buzzer-size: min(32rem, 36vw, 58vh);
+  }
+}
