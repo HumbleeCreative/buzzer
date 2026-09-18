@@ -1,101 +1,55 @@
 const buzzer = document.getElementById("buzzer");
 const soundToggle = document.getElementById("soundToggle");
 const buzzerClip = document.getElementById("buzzerClip");
+const switchClip = document.getElementById("switchClip");
+const parpClip = document.getElementById("parpClip");
+const parp2Clip = document.getElementById("parp2Clip");
 
-let audioContext;
-let useSoundClip = true;
-let clipReady = false;
+let useBuzzerMode = true;
+let switchPressCount = 0;
+let isDebouncing = false;
 
-soundToggle.classList.toggle("is-active", useSoundClip);
-soundToggle.setAttribute("aria-checked", useSoundClip.toString());
+const DEBOUNCE_MS = 500;
 
-function getAudioContext() {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  }
+soundToggle.classList.toggle("is-active", useBuzzerMode);
+soundToggle.setAttribute("aria-checked", useBuzzerMode.toString());
 
-  return audioContext;
-}
-
-async function prepareAudio() {
-  if (clipReady) {
-    return;
-  }
-
+async function playClip(clip) {
   try {
-    buzzerClip.load();
-
-    buzzerClip.muted = true;
-
-    await buzzerClip.play();
-
-    buzzerClip.pause();
-    buzzerClip.currentTime = 0;
-
-    buzzerClip.muted = false;
-
-    clipReady = true;
-  } catch (error) {
-    buzzerClip.muted = false;
-
-    console.log("Audio preparation skipped:", error);
-  }
-}
-
-function playSynthBuzzer() {
-  const context = getAudioContext();
-
-  if (context.state === "suspended") {
-    context.resume();
-  }
-
-  const oscillator = context.createOscillator();
-  const gain = context.createGain();
-
-  oscillator.type = "square";
-
-  oscillator.frequency.setValueAtTime(110, context.currentTime);
-
-  oscillator.frequency.exponentialRampToValueAtTime(
-    90,
-    context.currentTime + 0.5,
-  );
-
-  gain.gain.setValueAtTime(0.22, context.currentTime);
-
-  gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.55);
-
-  oscillator.connect(gain);
-  gain.connect(context.destination);
-
-  oscillator.start();
-  oscillator.stop(context.currentTime + 0.55);
-}
-
-async function playSoundClip() {
-  try {
-    if (!clipReady) {
-      await prepareAudio();
-    }
-
-    buzzerClip.pause();
-    buzzerClip.currentTime = 0;
-
-    await buzzerClip.play();
+    clip.pause();
+    clip.currentTime = 0;
+    await clip.play();
   } catch (error) {
     console.log("Audio clip could not be played:", error);
   }
 }
 
-function playBuzzerSound() {
-  if (useSoundClip) {
-    playSoundClip();
+function playSwitchSound() {
+  switchPressCount += 1;
+
+  if (switchPressCount === 7) {
+    playClip(parpClip);
+  } else if (switchPressCount === 8) {
+    playClip(parp2Clip);
   } else {
-    playSynthBuzzer();
+    playClip(switchClip);
+  }
+}
+
+function playBuzzerSound() {
+  if (useBuzzerMode) {
+    playClip(buzzerClip);
+  } else {
+    playSwitchSound();
   }
 }
 
 function pressBuzzer() {
+  if (isDebouncing) {
+    return;
+  }
+
+  isDebouncing = true;
   buzzer.classList.add("is-pressed");
 
   playBuzzerSound();
@@ -103,19 +57,27 @@ function pressBuzzer() {
   setTimeout(() => {
     buzzer.classList.remove("is-pressed");
   }, 90);
+
+  setTimeout(() => {
+    isDebouncing = false;
+  }, DEBOUNCE_MS);
 }
 
 function toggleSoundMode() {
-  useSoundClip = !useSoundClip;
+  useBuzzerMode = !useBuzzerMode;
 
-  soundToggle.classList.toggle("is-active", useSoundClip);
-
-  soundToggle.setAttribute("aria-checked", useSoundClip.toString());
-
-  if (useSoundClip) {
-    prepareAudio();
-  }
+  soundToggle.classList.toggle("is-active", useBuzzerMode);
+  soundToggle.setAttribute("aria-checked", useBuzzerMode.toString());
 }
 
 buzzer.addEventListener("click", pressBuzzer);
 soundToggle.addEventListener("click", toggleSoundMode);
+
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch((error) => {
+      console.log("Service worker registration failed:", error);
+    });
+  });
+}

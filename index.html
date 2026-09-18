@@ -6,12 +6,79 @@
 
     <title>Buzzer</title>
 
+    <meta name="theme-color" content="#090b0e" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Buzzer" />
+
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="ios/icons/ios-icon-180.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="ios/icons/ios-icon-152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="ios/icons/ios-icon-120.png"
+    />
+
+    <link
+      rel="apple-touch-startup-image"
+      href="ios/splash/ios-splash-640x1136.png"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="ios/splash/ios-splash-750x1334.png"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="ios/splash/ios-splash-1125x2436.png"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="ios/splash/ios-splash-1242x2208.png"
+      media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="ios/splash/ios-splash-828x1792.png"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="ios/splash/ios-splash-1242x2688.png"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="ios/splash/ios-splash-1536x2048.png"
+      media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="ios/splash/ios-splash-1024x1366.png"
+      media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 1)"
+    />
+
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
     <div class="sound-toggle" aria-label="Sound mode">
-      <span class="sound-toggle__label">Synth</span>
+      <span class="sound-toggle__label">Switch</span>
 
       <button
         class="toggle-switch is-active"
@@ -39,6 +106,9 @@
     </main>
 
     <audio id="buzzerClip" src="buzzer.mp3" preload="auto"></audio>
+    <audio id="switchClip" src="switch.mp3" preload="auto"></audio>
+    <audio id="parpClip" src="parp.mp3" preload="auto"></audio>
+    <audio id="parp2Clip" src="parp.mp3" preload="auto"></audio>
 
     <script src="script.js"></script>
   </body>
